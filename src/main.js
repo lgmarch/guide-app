@@ -1,39 +1,14 @@
 const { app, BrowserWindow, Menu } = require('electron');
-const { autoUpdater, AppUpdater } = require("electron-updater");
-const path = require('path');
+const { autoUpdater, AppUpdater } = require('electron-updater');
 const { menu } = require('./menu');
-
-autoUpdater.autoDownload = false;
-autoUpdater.autoInstallOnAppQuit = true;
+const { createMainWindow } = require('./main-window');
 
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform == 'darwin';
 
-// Create the main window
-const createMainWindow = () => {
-  const filePathToPreloid = path.resolve(__dirname, '..', 'src', 'preload.js');
-  const filePathToIndexHtml = path.resolve(__dirname, '..', 'public', 'index.html');
-
-  const mainWIndow = new BrowserWindow({
-    title: 'MZTA Help',
-    width: isDev ? 1000 : 1024,
-    height: 768,
-    webPreferences: {
-      preload: filePathToPreloid,
-    }
-  });
-
-  // Open DevTools if in dev mode
-  if(isDev) {
-    mainWIndow.webContents.openDevTools();
-  }
-
-  mainWIndow.loadFile(filePathToIndexHtml);
-}
-
 // App is ready
 app.whenReady().then(() => {
-  createMainWindow();
+  createMainWindow(isDev);
 
   // Implement Menu
   Menu.setApplicationMenu(menu);
@@ -43,9 +18,6 @@ app.whenReady().then(() => {
       createMainWindow();
     }
   });
-
-  autoUpdater.checkForUpdates();
-  // curWindow.showMessage(`Checking for updates. Current version ${app.getVersion()}`);
 });
 
 app.on('window-all-closed', () => {
@@ -54,7 +26,7 @@ app.on('window-all-closed', () => {
     }
 });
 
-/*New Update Available*/
+// New Update Available
 autoUpdater.on("update-available", (info) => {
   curWindow.showMessage(`Update available. Current version ${app.getVersion()}`);
   let pth = autoUpdater.downloadUpdate();
@@ -65,7 +37,7 @@ autoUpdater.on("update-not-available", (info) => {
   // curWindow.showMessage(`No update available. Current version ${app.getVersion()}`);
 });
 
-/*Download Completion Message*/
+// Download Completion Message
 autoUpdater.on("update-downloaded", (info) => {
   // curWindow.showMessage(`Update downloaded. Current version ${app.getVersion()}`);
 });
@@ -73,4 +45,3 @@ autoUpdater.on("update-downloaded", (info) => {
 autoUpdater.on("error", (info) => {
   // curWindow.showMessage(info);
 });
-
