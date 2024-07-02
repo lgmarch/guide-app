@@ -1,35 +1,45 @@
 const { app, BrowserWindow } = require('electron');
-const path = require('path');
 const { autoUpdater, AppUpdater } = require("electron-updater");
+const path = require('path');
 
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
 
 let curWindow;
 
-const createWindow = () => {
-  const filePathToPreloid = path.resolve(__dirname, '..', 'src', 'preload.js');
-  const filePathToIndex = path.resolve(__dirname, '..', 'public', 'index.html');
+const isDev = process.env.NODE_ENV !== 'development';
+const isMac = process.platform == 'darwin';
 
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+const createMainWindow = () => {
+  const filePathToPreloid = path.resolve(__dirname, '..', 'src', 'preload.js');
+  const filePathToIndexHtml = path.resolve(__dirname, '..', 'public', 'index.html');
+
+  const mainWIndow = new BrowserWindow({
+    title: 'MZTA Help',
+    width: isDev ? 1000 : 1024,
+    height: 768,
     webPreferences: {
       preload: filePathToPreloid,
     }
   });
-  win.loadFile(filePathToIndex);
 
-  curWindow = win;
+  // Open DevTools if in dev mode
+  if(isDev) {
+    mainWIndow.webContents.openDevTools();
+  }
+
+  mainWIndow.loadFile(filePathToIndexHtml);
+
+  curWindow = mainWIndow;
 }
 
 app.whenReady().then(() => {
-  createWindow();
+  createMainWindow();
 
   app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createMainWindow();
+    }
   });
 
   autoUpdater.checkForUpdates();
@@ -37,7 +47,7 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    if (!isMac) {
       app.quit();
     }
 });
