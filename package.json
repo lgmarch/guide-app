@@ -5,7 +5,6 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "dist": "electron-builder"
@@ -21,7 +20,7 @@
     }
   },
   "author": "march",
-  "license": "MIT",
+  "license": "ISC",
   "devDependencies": {
     "@electron-forge/cli": "^7.4.0",
     "@electron-forge/maker-deb": "^7.4.0",
