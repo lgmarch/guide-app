@@ -1,4 +1,5 @@
 const { app, Menu } = require('electron');
+const { createAboutWindow } = require('./about-window');
 
 const isMac = process.platform === 'darwin';
 
@@ -8,14 +9,26 @@ const menuTemplate = [
       label: app.name,
       submenu: [
         {
-          label: 'О программе',
+          label: 'Справка',
           submenu: [
-          {
-            label: 'Выход',
-            click: () => app.quit(),
-          }
-      ]
-        }
+            {
+              label: 'О программе',
+              click: createAboutWindow,
+            },
+            { type: 'separator' },
+            {
+              label: 'Выход',
+              click: () => app.quit(),
+            },
+          ] 
+        },
+        {
+            label: 'Update',
+            submenu: [{
+                label: 'Сhecking for updates',
+                click: async () => {},
+            }]
+          },
       ]
     }] : []),
   
@@ -24,7 +37,7 @@ const menuTemplate = [
         submenu: [
         {
           label: 'О программе',
-          click: () => {}  
+          click: createAboutWindow,
         },
         { type: 'separator' },
         {

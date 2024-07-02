@@ -1,13 +1,10 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const { autoUpdater, AppUpdater } = require("electron-updater");
 const path = require('path');
-
 const { menu } = require('./menu');
 
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
-
-let curWindow;
 
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform == 'darwin';
@@ -32,8 +29,6 @@ const createMainWindow = () => {
   }
 
   mainWIndow.loadFile(filePathToIndexHtml);
-
-  curWindow = mainWIndow;
 }
 
 // App is ready
