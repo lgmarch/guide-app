@@ -9,6 +9,11 @@
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
+  "repository": "https://github.com/lgmarch/guide-app",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
   "build": {
     "appId": "com.mzta.guide",
     "productName": "MZTA Help",

@@ -22,6 +22,8 @@ const createMainWindow = (isDev) => {
     }
   
     mainWIndow.loadFile(filePathToIndexHtml);
+
+    return mainWIndow;
 }
 
 module.exports = { createMainWindow };

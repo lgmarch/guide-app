@@ -18,6 +18,7 @@ const menuTemplate = [
             { type: 'separator' },
             {
               label: 'Выход',
+              accelerator: 'Alt+Cmd+Q',
               click: () => app.quit(),
             },
           ] 
@@ -25,7 +26,8 @@ const menuTemplate = [
         {
             label: 'Update',
             submenu: [{
-                label: 'Сhecking for updates',
+                label: 'Updates',
+                // Send to main
                 click: async () => {},
             }]
           },
@@ -42,6 +44,7 @@ const menuTemplate = [
         { type: 'separator' },
         {
             label: 'Выход',
+            accelerator: process.platform === 'darwin' ? 'Alt+Cmd+Q' : 'Alt+Shift+Q',
             click: () => app.quit(),
         },
         ],
@@ -49,8 +52,12 @@ const menuTemplate = [
       {
         label: 'Update',
         submenu: [{
-            label: 'Сhecking for updates',
-            click: async () => {},
+            label: 'Updates',
+            accelerator: 'Alt+Shift+U',
+            // Send to main
+            click: () => { 
+              app.emit('update');
+            },
         }]
       },
     ] : []),
