@@ -2,24 +2,23 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const { autoUpdater, AppUpdater } = require("electron-updater");
 
-//Basic flags
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
 
 let curWindow;
 
 const createWindow = () => {
+  const filePathToPreloid = path.resolve(__dirname, '..', 'src', 'preload.js');
+  const filePathToIndex = path.resolve(__dirname, '..', 'public', 'index.html');
+
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'src', 'preload.js'),
+      preload: filePathToPreloid,
     }
   });
-
-  const filePath = path.resolve(__dirname, '..', 'public', 'index.html');
-  console.log(filePath);
-  win.loadFile(filePath);
+  win.loadFile(filePathToIndex);
 
   curWindow = win;
 }
@@ -34,7 +33,7 @@ app.whenReady().then(() => {
   });
 
   autoUpdater.checkForUpdates();
-  curWindow.showMessage(`Checking for updates. Current version ${app.getVersion()}`);
+  // curWindow.showMessage(`Checking for updates. Current version ${app.getVersion()}`);
 });
 
 app.on('window-all-closed', () => {
@@ -47,19 +46,19 @@ app.on('window-all-closed', () => {
 autoUpdater.on("update-available", (info) => {
   curWindow.showMessage(`Update available. Current version ${app.getVersion()}`);
   let pth = autoUpdater.downloadUpdate();
-  curWindow.showMessage(pth);
+  // curWindow.showMessage(pth);
 });
 
 autoUpdater.on("update-not-available", (info) => {
-  curWindow.showMessage(`No update available. Current version ${app.getVersion()}`);
+  // curWindow.showMessage(`No update available. Current version ${app.getVersion()}`);
 });
 
 /*Download Completion Message*/
 autoUpdater.on("update-downloaded", (info) => {
-  curWindow.showMessage(`Update downloaded. Current version ${app.getVersion()}`);
+  // curWindow.showMessage(`Update downloaded. Current version ${app.getVersion()}`);
 });
 
 autoUpdater.on("error", (info) => {
-  curWindow.showMessage(info);
+  // curWindow.showMessage(info);
 });
 
