@@ -1,6 +1,8 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const { autoUpdater, AppUpdater } = require("electron-updater");
 const path = require('path');
+
+const { menu } = require('./menu');
 
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
@@ -10,6 +12,7 @@ let curWindow;
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform == 'darwin';
 
+// Create the main window
 const createMainWindow = () => {
   const filePathToPreloid = path.resolve(__dirname, '..', 'src', 'preload.js');
   const filePathToIndexHtml = path.resolve(__dirname, '..', 'public', 'index.html');
@@ -33,8 +36,12 @@ const createMainWindow = () => {
   curWindow = mainWIndow;
 }
 
+// App is ready
 app.whenReady().then(() => {
   createMainWindow();
+
+  // Implement Menu
+  Menu.setApplicationMenu(menu);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
