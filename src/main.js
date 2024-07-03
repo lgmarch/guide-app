@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { menu } = require('./menu');
 const { createMainWindow } = require('./main-window');
@@ -40,8 +40,8 @@ process.on("uncaughtException", function (err) {
 app.on('update-click', () => { 
   console.log('! Request To Update From Menu To Main');
   // ** to renderer
-  mainWindow.webContents.send('update-message', `Current version ${app.getVersion()}`);
   let check = autoUpdater.checkForUpdates();
+  mainWindow.webContents.send('update-message', `Current version ${app.getVersion()}, ${check}`);
   console.log('check', check);
 });
 
