@@ -1,15 +1,13 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { menu } = require('./menu');
 const { createMainWindow } = require('./main-window');
 
-const isDev = process.env.NODE_ENV !== 'development';
-const isMac = process.platform == 'darwin';
 let mainWindow;
 
 // App is ready
 app.whenReady().then(() => {
-  mainWindow = createMainWindow(isDev);
+  mainWindow = createMainWindow();
 
   // Implement Menu
   Menu.setApplicationMenu(menu);
@@ -25,7 +23,7 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-    if (!isMac) {
+    if (!process.platform == 'darwin') {
       app.quit();
     }
 });
@@ -35,29 +33,37 @@ process.on("uncaughtException", function (err) {
   console.log(err);
 });
 
+// autoUpdater.autoDownload = true;
+// autoUpdater.autoInstallOnAppQuit = true;
+
 // *** from Menu
-app.on('update', () => { 
-  console.log('! Request To Update');
+app.on('update-click', () => { 
+  console.log('! Request To Update From Menu To Main');
   // ** to renderer
-  mainWindow.webContents.send('update-message', 'SAVED');
-  autoUpdater.checkForUpdates();
+  let check = autoUpdater.checkForUpdates();
+  mainWindow.webContents.send('update-message', `Current version ${app.getVersion()}, ${check}`);
+  console.log('check', check);
 });
 
+// New Release available
 autoUpdater.on("update-available", (info) => {
   let pth = autoUpdater.downloadUpdate();
   console.log('! update-available', pth);
-  mainWindow.webContents.send('update-available', `Update available. Current version ${app.getVersion()}`);
+  mainWindow.webContents.send('update-available', 'update-available');
 });
   
-autoUpdater.on("update-not-available", (info) => {
-  // curWindow.showMessage(`No update available. Current version ${app.getVersion()}`);
+autoUpdater.on('update-not-available', (info) => {
+  console.log('! update-not-available', info);
+  mainWindow.webContents.send('update-not-available', 'update-not-available');
 });
 
 // Download Completion Message
   autoUpdater.on("update-downloaded", (info) => {
-  // curWindow.showMessage(`Update downloaded. Current version ${app.getVersion()}`);
+  console.log('! update-downloaded', info);
+  mainWindow.webContents.send('update-downloaded', 'update-downloaded');
 });
 
 autoUpdater.on("error", (info) => {
-  // curWindow.showMessage(info);
+  console.log('! error ', info);
+  mainWindow.webContents.send('update-error', 'update-error');
 });

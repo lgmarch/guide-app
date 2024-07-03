@@ -6,8 +6,8 @@ information.innerText = `This app is using Chrome (
   and Electron (v${versions.electron()},
 )`;
 
-ipcRenderer.on('update-message', function (evt, message) {
-  console.log(message); // Returns: {'SAVED': 'File Saved'}
+window.updateAPI.onUpdateRelease((value) => {
+  alertSuccess(value);
 });
 
 function alertSuccess(message) {

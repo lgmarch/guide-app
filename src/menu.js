@@ -56,7 +56,7 @@ const menuTemplate = [
             accelerator: 'Alt+Shift+U',
             // Send to main
             click: () => { 
-              app.emit('update');
+              app.emit('update-click');
             },
         }]
       },
