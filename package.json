@@ -4,19 +4,17 @@
   "description": "MZTA Help Application",
   "main": "src/main.js",
   "scripts": {
+    "watch": "npx electronmon .",
     "start": "electron .",
+    "dist-dev": "electron-builder --dir",
     "dist": "electron-builder",
-    "package": "electron-forge package",
+    "pack": "electron-forge package",
     "make": "electron-forge make"
   },
   "repository": "https://github.com/lgmarch/guide-app",
-  "publish": {
-    "provider": "github",
-    "releaseType": "release"
-  },
   "build": {
     "appId": "com.mzta.guide",
-    "productName": "MZTA Help",
+    "productName": "MZTA_Help",
     "win": {
       "target": "nsis"
     },
