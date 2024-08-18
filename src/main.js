@@ -44,7 +44,7 @@ app.on('update-click', () => {
   console.log('! Request To Update From Menu To Main');
   // ** to renderer
   let check = autoUpdater.checkForUpdates();
-  mainWindow.webContents.send('update-message', `Current version ${app.getVersion()}, ${check}`);
+  mainWindow.webContents.send('update-message', `Current version ${app.getVersion()}. No update required`);
   console.log('check', check);
 });
 
