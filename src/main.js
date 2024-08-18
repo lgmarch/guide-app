@@ -19,11 +19,14 @@ app.whenReady().then(() => {
   });
 
   // Remove variable from memory
-  mainWindow.on('closed', () => (mainWindow = null));
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+    app.quit();
+  });
 });
 
 app.on('window-all-closed', () => {
-    if (!process.platform == 'darwin') {
+    if (!process.platform === 'darwin') {
       app.quit();
     }
 });
