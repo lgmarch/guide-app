@@ -21,11 +21,12 @@ contextBridge.exposeInMainWorld('Toastify', {
   toast: (options) => Toastify(options).showToast(),
 });
 
-contextBridge.exposeInMainWorld('update', {
-  send: (channel, data) => ipcRenderer.send(channel, data),
-  on: (channel, func) => ipcRenderer.on(channel, (event, ...args) => func(...args)),
-});
-
-contextBridge.exposeInMainWorld('electronAPI', {
-  setTitle: (title) => ipcRenderer.send('set-title', title)
+contextBridge.exposeInMainWorld('updateAPI', {
+  onUpdateRelease: (cb) => ipcRenderer.on('update-message', (_event, value) => cb(value)),
+  onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_event, value) => cb(value)),
+  onUpdateNotAvailable: (cb) => ipcRenderer.on('update-not-available', (_event, value) => cb(value)),
+  onUpdateNotAvailable: (cb) => ipcRenderer.on('update-downloaded', (_event, value) => cb(value)),
+  onUpdateNotAvailable: (cb) => ipcRenderer.on('update-not-available', (_event, value) => cb(value)),
+  // answer from render
+  // send: (channel, data) => ipcRenderer.send(channel, data),
 });

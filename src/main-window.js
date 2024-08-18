@@ -1,7 +1,8 @@
 const { BrowserWindow } = require("electron");
 const path = require("path");
 
-const createMainWindow = (isDev) => {
+const createMainWindow = () => {
+    const isDev = process.env.NODE_ENV !== 'development';
     const filePathToPreloid = path.resolve(__dirname, 'preload.js');
     const filePathToIndexHtml = path.resolve(__dirname, '..', 'public', 'index.html');
   
