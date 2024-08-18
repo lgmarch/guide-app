@@ -9,8 +9,7 @@
     "dist-dev": "electron-builder --dir",
     "dist": "electron-builder",
     "pack": "electron-forge package",
-    "make": "electron-forge make",
-    "package": "electron-forge package"
+    "make": "electron-forge make"
   },
   "repository": "https://github.com/lgmarch/guide-app",
   "build": {
